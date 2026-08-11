@@ -1,0 +1,6 @@
+AccountNumber: 3356603696
+Name: Withdraw Test
+PIN: 1234
+Balance: 700.0
+TRANSACTIONS:
+2026-08-11 23:20:14,WITHDRAW,300,700.0

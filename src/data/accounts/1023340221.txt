@@ -1,0 +1,6 @@
+UserID: 1023340221
+Name: Praneeth
+PIN: 9390
+Balance: 15000.00
+Phone: 9390952446
+Email: praneeth.gamidi@gmail.com

@@ -1,0 +1,6 @@
+AccountNumber: 12345
+Name: John Doe
+PIN: 1234
+Balance: 1500.0
+TRANSACTIONS:
+2026-08-11 10:00:00,DEPOSIT,500.0,1500.0
