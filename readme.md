@@ -1,45 +1,28 @@
 Banking Application
 
-A simple command-line banking application built with Python and Object-Oriented Programming. The application uses the file system for persistent account storage instead of a database and provides core banking operations through a CLI.
+A simple command-line banking application built with Python and Object-Oriented Programming (OOP). The application uses the file system for persistent account storage instead of a database and provides core banking operations through a CLI.
 
 Features
-
 Account registration with a randomly generated 10-digit account number
-
 PIN-based login
-
 Check account balance
-
 Deposit money
-
 Withdraw money
-
 Transfer money between accounts
-
 View transaction history
-
 Persistent account data using individual text files
-
 Separate transaction history for each account
-
-Input and error handling through the CLI
-
+Error handling for invalid banking operations
+No GUI
+No database
 Technologies Used
-
 Python
-
-Object-Oriented Programming (OOP)
-
-File System Storage
-
+Object-Oriented Programming
 Command Line Interface (CLI)
-
-Python pathlib
-
-Python datetime
-
+File System Storage
+pathlib
+datetime
 Project Structure
-
 Banking_App_Python/
 │
 ├── main.py
@@ -56,94 +39,102 @@ Banking_App_Python/
     └── data/
         └── accounts/
             └── <account_number>.txt
-
 Architecture
 
-The application follows a simple layered design:
+The application follows a simple layered architecture:
 
 User
-  ↓
+  |
+  v
 CLI
-  ↓
+  |
+  v
 Authentication / Bank System
-  ↓
+  |
+  v
 Account
-  ↓
+  |
+  v
 File Handler
-  ↓
+  |
+  v
 File System
-
 main.py
 
-Acts as the application entry point. It creates the BankSystem and CLI objects and starts the application.
+The main entry point of the application.
+
+It creates the BankSystem and CLI objects and starts the application.
 
 cli.py
 
-Handles user interaction, menus, input collection, and displaying results. It does not directly manipulate account files or implement banking rules.
+Handles user interaction and the command-line menus.
+
+Responsibilities:
+
+Display menus
+Collect user input
+Display results and errors
+Call authentication and banking services
+
+The CLI does not directly manipulate files or implement banking rules.
 
 account.py
 
-Contains the Account class and account-level operations such as:
+Contains the Account class and account-level operations.
 
-Deposit validation
+Responsibilities:
 
-Withdrawal validation
-
-PIN verification
-
-Balance management
-
+Store account information
+Maintain account balance
+Validate withdrawals
+Process deposits and withdrawals
+Verify PIN
 auth_service.py
 
-Handles authentication-related operations:
+Handles authentication-related operations.
 
-Account registration
+Responsibilities:
 
-Account login
-
-Account number generation
-
-PIN verification through the Account class
-
+Register new accounts
+Generate unique account numbers
+Login users
+Verify account credentials
 bank_system.py
 
-Acts as the main banking service layer. It handles:
+Acts as the main banking service layer.
 
-Loading and saving accounts
+Responsibilities:
 
-Deposits
-
-Withdrawals
-
-Transfers
-
-Transaction history
-
-Account existence checks
-
+Load accounts
+Save accounts
+Check account existence
+Process deposits
+Process withdrawals
+Process transfers
+Retrieve transaction history
 file_handler.py
 
-Handles raw file-system operations. It is responsible for:
+Handles all raw file-system operations.
 
-Checking account files
+Responsibilities:
 
-Reading account files
-
-Writing account files
-
-Appending transaction records
-
+Check whether an account file exists
+Read account files
+Write account files
+Append transaction records
 File Storage
 
-No database is used.
+The application does not use a database.
 
-Each account is stored in a separate text file using its account number as the filename.
+Each account is stored in an individual text file using the account number as the filename.
 
 For example:
 
-data/accounts/1571492716.txt
+src/data/accounts/1571492716.txt
 
-A typical account file looks like:
+Each account file contains both profile information and transaction history.
+
+Example:
 
 AccountNumber: 1571492716
 Name: Karthik
@@ -153,12 +144,10 @@ TRANSACTIONS:
 2026-08-11 23:47:28,DEPOSIT,2000.0,4000.0
 2026-08-11 23:47:36,WITHDRAW,1000.0,3000.0
 2026-08-11 23:48:11,TRANSFER_OUT,1000.0,2000.0
-
-The account profile and transaction history are stored together in the same file.
-
+2026-08-11 23:48:11,TRANSFER_IN,1000.0,2000.0
 Transaction Format
 
-Transactions follow this format:
+Each transaction follows this format:
 
 timestamp,transaction_type,amount,balance_after
 
@@ -168,16 +157,15 @@ Examples:
 2026-08-11 23:47:36,WITHDRAW,1000.0,3000.0
 2026-08-11 23:48:11,TRANSFER_OUT,1000.0,2000.0
 2026-08-11 23:48:11,TRANSFER_IN,1000.0,2000.0
-
 Running the Application
 
-Make sure Python is installed.
+Make sure Python is installed on your system.
 
-From the project root:
+From the project root directory, run:
 
 python main.py
 
-The application starts with:
+The application starts with the following menu:
 
 ===== BANKING APPLICATION =====
 
@@ -185,7 +173,7 @@ The application starts with:
 2. Login
 3. Exit
 
-After login, the account menu provides:
+After successful login, the account menu is displayed:
 
 ===== ACCOUNT MENU =====
 
@@ -195,132 +183,122 @@ After login, the account menu provides:
 4. Transfer
 5. Transaction History
 6. Logout
-
 Example Workflow
-
 Register
-
 Enter your choice: 1
 Enter your name: Karthik
 Enter your PIN: 8497
 Enter initial balance: 2000
+
 Account created successfully.
 Your account number is: 1571492716
-
 Login
-
 Enter your choice: 2
 Enter account number: 1571492716
 Enter PIN: 8497
+
 Welcome, Karthik!
-
 Deposit
-
 Enter deposit amount: 500
-Deposit successful. New balance: 2500.0
 
+Deposit successful.
+New balance: 2500.0
 Withdraw
-
 Enter withdrawal amount: 200
-Withdrawal successful. New balance: 2300.0
 
+Withdrawal successful.
+New balance: 2300.0
 Transfer
-
 Enter receiver account number: 1234567890
 Enter transfer amount: 500
-Transfer successful. New balance: 1800.0
 
+Transfer successful.
+New balance: 1800.0
 Transaction History
-
 ===== TRANSACTION HISTORY =====
+
 2026-08-11 23:47:28,DEPOSIT,500.0,2500.0
 2026-08-11 23:50:10,WITHDRAW,200.0,2300.0
 2026-08-11 23:52:30,TRANSFER_OUT,500.0,1800.0
-
 Design Principles
 
-The project intentionally keeps the implementation simple.
+The application was intentionally designed to remain simple and easy to understand.
 
-No GUI
-
-No database
-
-File-system based persistence
-
-OOP-based design
-
+Command-line interface instead of GUI
+File-system storage instead of a database
+Object-oriented design
 Separation of responsibilities
+Banking logic separated from user interaction
+File operations isolated in file_handler.py
+Account-specific operations handled by Account
+Banking workflows handled by BankSystem
+Authentication handled by auth_service.py
+Error Handling
 
-Banking logic is kept outside the CLI
-
-File operations are isolated in file_handler.py
-
-Account-specific rules are handled by Account
-
-BankSystem coordinates banking operations
-
-Validation and Error Handling
-
-The application handles common invalid operations such as:
+The application handles common invalid operations, including:
 
 Non-existent account
-
 Incorrect PIN
-
 Invalid deposit amount
-
 Invalid withdrawal amount
-
-Insufficient balance
-
+Insufficient account balance
 Non-existent receiver account
-
 Transfer to the same account
+Invalid transfer amount
 
-Failed banking operations should not create transaction records.
+Failed banking operations do not create transaction records.
+
+Persistence
+
+Account information is stored directly on the file system.
+
+For example:
+
+Register account
+       |
+       v
+1571492716.txt
+       |
+       v
+Deposit / Withdraw / Transfer
+       |
+       v
+Updated account file
+
+The data remains available after the application is closed and restarted.
 
 Limitations
 
-This application is designed as an educational project and is not suitable for real banking or financial use.
+This application is designed for educational purposes and is not suitable for real banking or financial use.
 
-The project intentionally uses plain-text files, which means:
+The current implementation uses plain-text files, which means:
 
-PINs are not securely encrypted or hashed
-
-Account files are not protected with database-level access controls
-
+PINs are not securely hashed or encrypted
+Account files do not have database-level access control
 File storage does not provide database transactions
+Concurrent access is not handled
+A system failure during a transfer could potentially result in a partial update
+There is no production-grade authentication or authorization system
 
-Simultaneous access is not handled
-
-A system failure during a multi-file transfer could theoretically cause partial updates
-
-These limitations are intentional because the project requirements specify a simple CLI and file-system-based implementation.
+These limitations are intentional because the project requirements specify a simple CLI-based application using the file system instead of a database.
 
 Future Improvements
 
-Possible future improvements include:
+Possible improvements include:
 
 Secure PIN hashing
-
-Better input validation
-
+Stronger input validation
+Atomic file operations
 Transaction rollback for failed transfers
-
-Atomic file updates
-
-Unit tests
-
-Logging
-
+Unit and integration tests
+Application logging
 Improved transaction formatting
-
-More detailed account information
-
-Role-based administration
-
-Migration to a database for production use
-
+Administrative functionality
+Database integration
+Better authentication and authorization
+Encryption of sensitive account information
 Disclaimer
 
-This project is created for learning and demonstration purposes. It is not intended to process real money or store real financial information.
+This project is created for learning and demonstration purposes.
+
+It is not intended to process real money, store real financial information, or be used as a production banking system.
