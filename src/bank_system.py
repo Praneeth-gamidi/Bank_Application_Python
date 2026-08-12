@@ -2,14 +2,14 @@ from . import file_handler
 from .account import Account
 from datetime import datetime
 class BankSystem:
-    def account_exists(self, account_number: str) -> bool:
+    def account_exists(self, account_number):
         return file_handler.account_file_exists(account_number)
-    def load_account(self, account_number: str) -> Account:
+    def load_account(self, account_number):
         content = file_handler.read_account_file(account_number)
         profile = content.split("TRANSACTIONS:", 1)[0].strip()
         return Account.from_line(profile)
     
-    def save_account(self, account: Account) -> None:
+    def save_account(self, account):
         account_number = account._account_number
         if file_handler.account_file_exists(account_number):
             content = file_handler.read_account_file(account_number)
@@ -23,21 +23,21 @@ class BankSystem:
             content = account.to_line() + "\nTRANSACTIONS:\n"
         file_handler.write_account_file(account_number, content)
 
-    def deposit(self, account: Account, amount: float) -> None:
+    def deposit(self, account, amount):
         account.deposit(amount)
         self.save_account(account)
-
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         transaction = f"{timestamp},DEPOSIT,{amount},{account._balance}"
         file_handler.append_transaction_line(account._account_number, transaction)
-    def withdraw(self, account: Account, amount: float) -> None:
+
+    def withdraw(self, account, amount):
         account.withdraw(amount)
         self.save_account(account)
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         transaction = f"{timestamp},WITHDRAW,{amount},{account._balance}"
         file_handler.append_transaction_line(account._account_number, transaction)
 
-    def get_transaction_history(self, account_number: str) -> list[str]:
+    def get_transaction_history(self, account_number):
         content = file_handler.read_account_file(account_number)
         parts = content.split("TRANSACTIONS:", 1)
         if len(parts) < 2:
@@ -48,7 +48,7 @@ class BankSystem:
         return transactions.splitlines()
     
 
-    def transfer(self, sender: Account, receiver_account_number: str, amount: float) -> None:
+    def transfer(self, sender, receiver_account_number, amount):
         if not self.account_exists(receiver_account_number):
             raise ValueError("Receiver account does not exist")
 

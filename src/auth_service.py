@@ -1,7 +1,7 @@
 import random
 from .account import Account
 from .bank_system import BankSystem
-def register(bank: BankSystem, name: str, pin: str, initial_balance: float = 0.0) -> str:
+def register(bank, name, pin, initial_balance=0.0):
     while True:
         account_number = str(random.randint(1000000000, 9999999999))
         if not bank.account_exists(account_number):
@@ -11,7 +11,7 @@ def register(bank: BankSystem, name: str, pin: str, initial_balance: float = 0.0
     return account_number
 
 
-def login(bank: BankSystem, account_number: str, pin: str) -> Account:
+def login(bank, account_number, pin):
     if not bank.account_exists(account_number):
         raise ValueError("Invalid account number or PIN")
 

@@ -4,10 +4,10 @@ from .bank_system import BankSystem
 
 
 class CLI:
-    def __init__(self, bank: BankSystem):
+    def __init__(self, bank):
         self.bank = bank
 
-    def run(self) -> None:
+    def run(self):
         while True:
             print("\n===== BANKING APPLICATION =====")
             print("1. Register")
@@ -26,7 +26,7 @@ class CLI:
             else:
                 print("Invalid choice. Please try again.")
 
-    def register_user(self) -> None:
+    def register_user(self):
         name = input("Enter your name: ")
         pin = input("Enter your PIN: ")
         balance_input = input("Enter initial balance: ")
@@ -44,7 +44,7 @@ class CLI:
         except ValueError as e:
             print(f"Registration failed: {e}")
 
-    def login_user(self) -> None:
+    def login_user(self):
         account_number = input("Enter account number: ")
         pin = input("Enter PIN: ")
 
@@ -55,7 +55,7 @@ class CLI:
         except ValueError as e:
             print(f"Login failed: {e}")
 
-    def account_menu(self, account: Account) -> None:
+    def account_menu(self, account):
         while True:
             print("\n===== ACCOUNT MENU =====")
             print("1. Check Balance")
@@ -83,10 +83,10 @@ class CLI:
             else:
                 print("Invalid choice. Please try again.")
 
-    def show_balance(self, account: Account) -> None:
+    def show_balance(self, account):
         print(f"Current balance: {account._balance}")
 
-    def deposit(self, account: Account) -> None:
+    def deposit(self, account):
         try:
             amount = float(input("Enter deposit amount: "))
             self.bank.deposit(account, amount)
@@ -94,7 +94,7 @@ class CLI:
         except ValueError as e:
             print(f"Deposit failed: {e}")
 
-    def withdraw(self, account: Account) -> None:
+    def withdraw(self, account):
         try:
             amount = float(input("Enter withdrawal amount: "))
             self.bank.withdraw(account, amount)
@@ -102,7 +102,7 @@ class CLI:
         except ValueError as e:
             print(f"Withdrawal failed: {e}")
 
-    def transfer(self, account: Account) -> None:
+    def transfer(self, account):
         receiver = input("Enter receiver account number: ")
 
         try:
@@ -112,7 +112,7 @@ class CLI:
         except ValueError as e:
             print(f"Transfer failed: {e}")
 
-    def show_transaction_history(self, account: Account) -> None:
+    def show_transaction_history(self, account):
         try:
             history = self.bank.get_transaction_history(
                 account._account_number
